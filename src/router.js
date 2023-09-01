@@ -12,7 +12,6 @@ router.post('/transacoes/depositar', controladoresBanco.fazerDeposito);
 router.post('/transacoes/sacar', controladoresBanco.fazerSaque);
 router.post('/transacoes/transferir', controladoresBanco.transferir);
 router.get('/contas/saldo', autenticacao.validarUsuario, controladoresBanco.consultarSaldo);
-router.get('/contas/extrato', autenticacao.validarUsuario);
-
+router.get('/contas/extrato', autenticacao.validarUsuario, controladoresBanco.consultarExtrato);
 
 module.exports = router

@@ -120,8 +120,8 @@ const fazerDeposito = (req, res) => {
 
     const registroTransacao = {
         data: dataTransacao,
-        numero_conta: numero_conta,
-        valor: valor
+        numero_conta,
+        valor
     }
 
     bancodedados.depositos.push(registroTransacao)
@@ -160,8 +160,8 @@ const fazerSaque = (req, res) => {
 
     const registroTransacao = {
         data: dataTransacao,
-        numero_conta: numero_conta,
-        valor: valor
+        numero_conta,
+        valor
     }
 
     bancodedados.saques.push(registroTransacao)
@@ -195,7 +195,7 @@ const transferir = (req, res) => {
         return res.status(401).json({ mensagem: 'Senha incorreta.' })
     }
 
-    if (valor > contaOrigem.usuario.saldo) {
+    if (valor > contaOrigem.saldo) {
         return res.status(400).json({ mensagem: 'Saldo insuficiente para a transferência.' })
     }
 
@@ -232,7 +232,28 @@ const consultarSaldo = (req, res) => {
     return res.status(200).json({ saldo: conta.saldo })
 }
 
+const consultarExtrato = (req, res) => {
+    const { numero_conta, senha } = req.query
 
+    const conta = bancodedados.contas.find(conta => conta.numero === numero_conta)
+
+    if (!conta) {
+        return res.status(404).json({ mensagem: 'Conta bancária não encontrada!' })
+    }
+
+    if (senha !== conta.usuario.senha) {
+        return res.status(401).json({ mensagem: 'Senha incorreta.' })
+    }
+
+    const extrato = {
+        depositos: bancodedados.depositos.filter(deposito => deposito.numero_conta === numero_conta),
+        saques: bancodedados.saques.filter(saque => saque.numero_conta === numero_conta),
+        transferenciasEnviadas: bancodedados.transferencias.filter(transf => transf.numero_conta_origem === numero_conta),
+        transferenciasRecebidas: bancodedados.transferencias.filter(transf => transf.numero_conta_destino === numero_conta)
+    }
+
+    return res.status(200).json(extrato);
+}
 
 module.exports = {
     listarContas,
@@ -242,5 +263,6 @@ module.exports = {
     fazerDeposito,
     fazerSaque,
     transferir,
-    consultarSaldo
+    consultarSaldo,
+    consultarExtrato
 }
