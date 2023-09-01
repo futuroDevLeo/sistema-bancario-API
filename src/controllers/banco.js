@@ -169,6 +169,54 @@ const fazerSaque = (req, res) => {
     return res.status(200).send()
 }
 
+const transferir = (req, res) => {
+    const { numero_conta_origem, numero_conta_destino, valor, senha } = req.body
+
+    if (!numero_conta_origem || !numero_conta_destino || !valor || !senha) {
+        return res.status(400).json({ mensagem: 'O número da conta de origem, número da conta de destino, valor e senha são obrigatórios!' })
+    }
+
+    const contaOrigem = bancodedados.contas.find(conta => conta.numero === numero_conta_origem)
+    const contaDestino = bancodedados.contas.find(conta => conta.numero === numero_conta_destino)
+
+    if (!contaOrigem) {
+        return res.status(404).json({ mensagem: 'Conta de origem não encontrada.' })
+    }
+
+    if (!contaDestino) {
+        return res.status(404).json({ mensagem: 'Conta de destino não encontrada.' })
+    }
+
+    if (valor <= 0) {
+        return res.status(400).json({ mensagem: 'O valor da transferência deve ser maior que zero.' })
+    }
+
+    if (senha !== contaOrigem.usuario.senha) {
+        return res.status(401).json({ mensagem: 'Senha incorreta.' })
+    }
+
+    if (valor > contaOrigem.usuario.saldo) {
+        return res.status(400).json({ mensagem: 'Saldo insuficiente para a transferência.' })
+    }
+
+    contaOrigem.saldo -= valor
+    contaDestino.saldo += valor
+
+    const dataTransacao = format(new Date(), "yyyy-MM-dd HH:mm:ss")
+
+    const registroTransacao = {
+        data: dataTransacao,
+        numero_conta_origem,
+        numero_conta_destino,
+        valor
+    }
+
+    bancodedados.transferencias.push(registroTransacao)
+
+    return res.status(200).send()
+}
+
+
 
 module.exports = {
     listarContas,
@@ -176,5 +224,6 @@ module.exports = {
     atualizarUsuario,
     excluirConta,
     fazerDeposito,
-    fazerSaque
+    fazerSaque,
+    transferir
 }

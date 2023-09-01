@@ -10,8 +10,8 @@ router.put('/contas/:numeroConta/usuario', autenticacao.validarCamposBody, contr
 router.delete('/contas/:numeroConta', controladoresBanco.excluirConta);
 router.post('/transacoes/depositar', controladoresBanco.fazerDeposito);
 router.post('/transacoes/sacar', controladoresBanco.fazerSaque);
+router.post('/transacoes/transferir', controladoresBanco.transferir);
 
-router.post('/transacoes/transferir');
 router.get('/contas/saldo', autenticacao.autenticarSenha);
 router.get('/contas/extrato', autenticacao.autenticarSenha);
 
