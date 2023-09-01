@@ -216,6 +216,22 @@ const transferir = (req, res) => {
     return res.status(200).send()
 }
 
+const consultarSaldo = (req, res) => {
+    const { numero_conta, senha } = req.query
+
+    const conta = bancodedados.contas.find(conta => conta.numero === numero_conta)
+
+    if (!conta) {
+        return res.status(404).json({ mensagem: 'Conta bancária não encontrada!' })
+    }
+
+    if (senha !== conta.usuario.senha) {
+        return res.status(401).json({ mensagem: 'Senha incorreta.' })
+    }
+
+    return res.status(200).json({ saldo: conta.saldo })
+}
+
 
 
 module.exports = {
@@ -225,5 +241,6 @@ module.exports = {
     excluirConta,
     fazerDeposito,
     fazerSaque,
-    transferir
+    transferir,
+    consultarSaldo
 }

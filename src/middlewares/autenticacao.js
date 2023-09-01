@@ -20,7 +20,18 @@ const validarCamposBody = (req, res, next) => {
     next()
 }
 
+const validarUsuario = (req, res, next) => {
+    const { numero_conta, senha } = req.query
+
+    if (!numero_conta || !senha) {
+        return res.status(400).json({ mensagem: 'O número da conta e a senha são obrigatórios!' })
+    }
+
+    next()
+}
+
 module.exports = {
     autenticarSenha,
-    validarCamposBody
+    validarCamposBody,
+    validarUsuario
 }
