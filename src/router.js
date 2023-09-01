@@ -11,7 +11,7 @@ router.delete('/contas/:numeroConta', controladoresBanco.excluirConta);
 router.post('/transacoes/depositar', controladoresBanco.fazerDeposito);
 router.post('/transacoes/sacar', controladoresBanco.fazerSaque);
 router.post('/transacoes/transferir', controladoresBanco.transferir);
-router.get('/contas/saldo', autenticacao.validarUsuario, controladoresBanco.consultarSaldo);
-router.get('/contas/extrato', autenticacao.validarUsuario, controladoresBanco.consultarExtrato);
+router.get('/contas/saldo', autenticacao.validarConta, controladoresBanco.consultarSaldo);
+router.get('/contas/extrato', autenticacao.validarConta, controladoresBanco.consultarExtrato);
 
 module.exports = router

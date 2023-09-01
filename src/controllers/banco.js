@@ -1,6 +1,11 @@
 const bancodedados = require('../data/bancodedados');
 const { format } = require('date-fns')
 
+function buscarConta(numeroconta) {
+    const contaExiste = bancodedados.contas.find(conta => conta.numero === numeroconta)
+    return contaExiste
+}
+
 const listarContas = (req, res) => {
     return res.status(200).json(bancodedados.contas)
 }
@@ -50,7 +55,7 @@ const atualizarUsuario = (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body
     const numeroConta = req.params.numeroConta
 
-    const contaAtualizar = bancodedados.contas.find(conta => { return conta.numero === numeroConta })
+    const contaAtualizar = buscarConta(numeroConta)
 
     if (!contaAtualizar) {
         return res.status(404).json({ mensagem: 'Conta não encontrada.' })
@@ -81,7 +86,7 @@ const atualizarUsuario = (req, res) => {
 const excluirConta = (req, res) => {
     const numeroConta = req.params.numeroConta
 
-    const contaDeletar = bancodedados.contas.find(conta => conta.numero === numeroConta)
+    const contaDeletar = buscarConta(numeroConta)
 
     if (!contaDeletar) {
         return res.status(404).json({ mensagem: 'Conta não encontrada.' })
@@ -104,7 +109,7 @@ const fazerDeposito = (req, res) => {
         return res.status(400).json({ mensagem: 'O número da conta e o valor são obrigatórios!' })
     }
 
-    const contaDepositar = bancodedados.contas.find(conta => conta.numero === numero_conta)
+    const contaDepositar = buscarConta(numero_conta)
 
     if (!contaDepositar) {
         return res.status(404).json({ mensagem: 'Conta não encontrada.' })
@@ -136,7 +141,7 @@ const fazerSaque = (req, res) => {
         return res.status(400).json({ mensagem: 'O número da conta, o valor e a senha são obrigatórios!' })
     }
 
-    const contaSaque = bancodedados.contas.find(conta => conta.numero === numero_conta)
+    const contaSaque = buscarConta(numero_conta)
 
     if (!contaSaque) {
         return res.status(404).json({ mensagem: 'Conta não encontrada.' })
@@ -176,8 +181,8 @@ const transferir = (req, res) => {
         return res.status(400).json({ mensagem: 'O número da conta de origem, número da conta de destino, valor e senha são obrigatórios!' })
     }
 
-    const contaOrigem = bancodedados.contas.find(conta => conta.numero === numero_conta_origem)
-    const contaDestino = bancodedados.contas.find(conta => conta.numero === numero_conta_destino)
+    const contaOrigem = buscarConta(numero_conta_origem)
+    const contaDestino = buscarConta(numero_conta_destino)
 
     if (!contaOrigem) {
         return res.status(404).json({ mensagem: 'Conta de origem não encontrada.' })
@@ -217,33 +222,15 @@ const transferir = (req, res) => {
 }
 
 const consultarSaldo = (req, res) => {
-    const { numero_conta, senha } = req.query
+    const { numero_conta } = req.query
 
-    const conta = bancodedados.contas.find(conta => conta.numero === numero_conta)
-
-    if (!conta) {
-        return res.status(404).json({ mensagem: 'Conta bancária não encontrada!' })
-    }
-
-    if (senha !== conta.usuario.senha) {
-        return res.status(401).json({ mensagem: 'Senha incorreta.' })
-    }
+    const conta = buscarConta(numero_conta)
 
     return res.status(200).json({ saldo: conta.saldo })
 }
 
 const consultarExtrato = (req, res) => {
-    const { numero_conta, senha } = req.query
-
-    const conta = bancodedados.contas.find(conta => conta.numero === numero_conta)
-
-    if (!conta) {
-        return res.status(404).json({ mensagem: 'Conta bancária não encontrada!' })
-    }
-
-    if (senha !== conta.usuario.senha) {
-        return res.status(401).json({ mensagem: 'Senha incorreta.' })
-    }
+    const { numero_conta } = req.query
 
     const extrato = {
         depositos: bancodedados.depositos.filter(deposito => deposito.numero_conta === numero_conta),

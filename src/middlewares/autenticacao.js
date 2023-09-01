@@ -20,11 +20,21 @@ const validarCamposBody = (req, res, next) => {
     next()
 }
 
-const validarUsuario = (req, res, next) => {
+const validarConta = (req, res, next) => {
     const { numero_conta, senha } = req.query
 
     if (!numero_conta || !senha) {
         return res.status(400).json({ mensagem: 'O número da conta e a senha são obrigatórios!' })
+    }
+
+    const conta = bancodedados.contas.find(conta => conta.numero === numero_conta)
+
+    if (!conta) {
+        return res.status(404).json({ mensagem: 'Conta bancária não encontrada!' })
+    }
+
+    if (senha !== conta.usuario.senha) {
+        return res.status(401).json({ mensagem: 'Senha incorreta.' })
     }
 
     next()
@@ -33,5 +43,5 @@ const validarUsuario = (req, res, next) => {
 module.exports = {
     autenticarSenha,
     validarCamposBody,
-    validarUsuario
+    validarConta
 }
