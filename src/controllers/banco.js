@@ -192,6 +192,10 @@ const transferir = (req, res) => {
         return res.status(404).json({ mensagem: 'Conta de destino não encontrada.' })
     }
 
+    if (contaOrigem === contaDestino) {
+        return res.status(400).json({ mensagem: 'Não é possivel transferir valores para a mesma conta.' })
+    }
+
     if (valor <= 0) {
         return res.status(400).json({ mensagem: 'O valor da transferência deve ser maior que zero.' })
     }
