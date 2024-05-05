@@ -8,13 +8,13 @@ const listAccountsService = () => {
 
 const createAccountService = ({ nome, cpf, data_nascimento, telefone, email, senha }) => {
     if (!nome || !cpf || !data_nascimento || !telefone || !email || !senha)
-        throw new Error({ mensagem: 'Todos os campos são obrigatórios.' });
+        throw new Error('Todos os campos são obrigatórios.');
 
     const contaExistente = bancodedados.contas.find(conta => {
         return conta.usuario.cpf === cpf || conta.usuario.email === email
     });
 
-    if (contaExistente) throw new Error({ mensagem: 'Já existe uma conta com o cpf ou e-mail informado!' });
+    if (contaExistente) throw new Error('Já existe uma conta com o cpf ou e-mail informado!');
 
     let numero = "1"
 
@@ -39,9 +39,9 @@ const createAccountService = ({ nome, cpf, data_nascimento, telefone, email, sen
 const deleteAccountService = (numeroConta) => {
     const contaDeletar = findAccount(numeroConta);
 
-    if (!contaDeletar) throw new Error({ mensagem: 'Conta não encontrada.' });
+    if (!contaDeletar) throw new Error('Conta não encontrada.');
 
-    if (contaDeletar.saldo !== 0) throw new Error({ mensagem: 'Por favor, retire o dinhero da conta antes de deleta-la!' });
+    if (contaDeletar.saldo !== 0) throw new Error('Por favor, retire o dinhero da conta antes de deleta-la!');
 
     const indiceConta = bancodedados.contas.indexOf(contaDeletar);
     return bancodedados.contas.splice(indiceConta, 1);
@@ -50,13 +50,13 @@ const deleteAccountService = (numeroConta) => {
 const updateUserService = ({ nome, cpf, data_nascimento, telefone, email, senha }, numeroConta) => {
     const contaAtualizar = findAccount(numeroConta)
 
-    if (!contaAtualizar) throw new Error({ mensagem: 'Conta não encontrada.' });
+    if (!contaAtualizar) throw new Error('Conta não encontrada.');
 
     const contaExistente = bancodedados.contas.find(conta => {
         return (conta.usuario.cpf === cpf || conta.usuario.email === email) && conta.numero !== numeroConta
     })
 
-    if (contaExistente) throw new Error({ mensagem: 'Já existe cadastrado para o CPF ou o Email informado!' });
+    if (contaExistente) throw new Error('Já existe cadastrado para o CPF ou o Email informado!');
 
     return {
         nome,
@@ -69,13 +69,13 @@ const updateUserService = ({ nome, cpf, data_nascimento, telefone, email, senha 
 }
 
 const makeDepositService = ({ numero_conta, valor }) => {
-    if (!numero_conta || !valor) throw new Error({ mensagem: 'O número da conta e o valor são obrigatórios!' });
+    if (!numero_conta || !valor) throw new Error('O número da conta e o valor são obrigatórios!');
 
     const contaDepositar = findAccount(numero_conta);
 
-    if (!contaDepositar) throw new Error({ mensagem: 'Conta não encontrada.' });
+    if (!contaDepositar) throw new Error('Conta não encontrada.');
 
-    if (valor <= 0) throw new Error({ mensagem: 'O valor do depósito deve ser maior que zero.' });
+    if (valor <= 0) throw new Error('O valor do depósito deve ser maior que zero.');
 
     contaDepositar.saldo += valor;
 
@@ -90,17 +90,17 @@ const makeDepositService = ({ numero_conta, valor }) => {
 
 const makeWithdrawalService = ({ numero_conta, valor, senha }) => {
     if (!numero_conta || !valor || !senha)
-        throw new Error({ mensagem: 'O número da conta, o valor e a senha são obrigatórios!' });
+        throw new Error('O número da conta, o valor e a senha são obrigatórios!');
 
     const contaSaque = findAccount(numero_conta);
 
-    if (!contaSaque) throw new Error({ mensagem: 'Conta não encontrada.' });
+    if (!contaSaque) throw new Error('Conta não encontrada.');
 
-    if (valor <= 0) throw new Error({ mensagem: 'O valor do saque deve ser maior que zero.' });
+    if (valor <= 0) throw new Error('O valor do saque deve ser maior que zero.');
 
-    if (senha !== contaSaque.usuario.senha) throw new Error({ mensagem: 'Senha incorreta.' });
+    if (senha !== contaSaque.usuario.senha) throw new Error('Senha incorreta.');
 
-    if (valor > contaSaque.saldo) throw new Error({ mensagem: 'Saldo insuficiente.' });
+    if (valor > contaSaque.saldo) throw new Error('Saldo insuficiente.');
 
     contaSaque.saldo -= valor;
 
@@ -115,22 +115,22 @@ const makeWithdrawalService = ({ numero_conta, valor, senha }) => {
 
 const makeTransferService = ({ numero_conta_origem, numero_conta_destino, valor, senha }) => {
     if (!numero_conta_origem || !numero_conta_destino || !valor || !senha)
-        throw new Error({ mensagem: 'O número da conta de origem, número da conta de destino, valor e senha são obrigatórios!' });
+        throw new Error('O número da conta de origem, número da conta de destino, valor e senha são obrigatórios!');
 
     const contaOrigem = findAccount(numero_conta_origem);
     const contaDestino = findAccount(numero_conta_destino);
 
-    if (!contaOrigem) throw new Error({ mensagem: 'Conta de origem não encontrada.' });
+    if (!contaOrigem) throw new Error('Conta de origem não encontrada.');
 
-    if (!contaDestino) throw new Error({ mensagem: 'Conta de destino não encontrada.' });
+    if (!contaDestino) throw new Error('Conta de destino não encontrada.');
 
-    if (contaOrigem === contaDestino) throw new Error({ mensagem: 'Não é possivel transferir valores para a mesma conta.' });
+    if (contaOrigem === contaDestino) throw new Error('Não é possivel transferir valores para a mesma conta.');
 
-    if (valor <= 0) throw new Error({ mensagem: 'O valor da transferência deve ser maior que zero.' });
+    if (valor <= 0) throw new Error('O valor da transferência deve ser maior que zero.');
 
-    if (senha !== contaOrigem.usuario.senha) throw new Error({ mensagem: 'Senha incorreta.' });
+    if (senha !== contaOrigem.usuario.senha) throw new Error('Senha incorreta.');
 
-    if (valor > contaOrigem.saldo) throw new Error({ mensagem: 'Saldo insuficiente para a transferência.' });
+    if (valor > contaOrigem.saldo) throw new Error('Saldo insuficiente para a transferência.');
 
     contaOrigem.saldo -= valor;
     contaDestino.saldo += valor;
