@@ -1,37 +1,39 @@
 import bancodedados from '../database/db.connection.js';
-import findAccount from "../repositories/account.repositories.js";
+import accountRepositories from "../repositories/account.repositories.js";
 import { format } from 'date-fns';
 
-const listAccountsService = () => {
-    return bancodedados.contas
+const listAccountsService = async () => {
+    const allAccounts = await accountRepositories.findAll();
+    if (allAccounts.length == 0) throw new Error('there are no registered accounts!');
+    return allAccounts
 }
 
-const createAccountService = ({ nome, cpf, data_nascimento, telefone, email, senha }) => {
-    if (!nome || !cpf || !data_nascimento || !telefone || !email || !senha)
-        throw new Error('Todos os campos são obrigatórios.');
+const createAccountService = ({ name, cpf, birthdate, phonenumber, email, password }) => {
+    if (!name || !cpf || !birthdate || !phonenumber || !email || !password)
+        throw new Error('All fields are mandatory.');
 
-    const contaExistente = bancodedados.contas.find(conta => {
-        return conta.usuario.cpf === cpf || conta.usuario.email === email
-    });
+    // const contaExistente = bancodedados.contas.find(conta => {
+    //     return conta.usuario.cpf === cpf || conta.usuario.email === email
+    // });
 
-    if (contaExistente) throw new Error('Já existe uma conta com o cpf ou e-mail informado!');
+    // if (contaExistente) throw new Error('Já existe uma conta com o cpf ou e-mail informado!');
 
-    let numero = "1"
+    let accountNumber = 1;
 
-    if (bancodedados.contas.length != 0) {
-        numero = String(Number(bancodedados.contas[bancodedados.contas.length - 1].numero) + 1);
-    }
+    // if (bancodedados.contas.length != 0) {
+    //     numero = String(Number(bancodedados.contas[bancodedados.contas.length - 1].numero) + 1);
+    // }
 
     return {
-        numero,
-        saldo: 0,
-        usuario: {
-            nome,
+        accountNumber: accountNumber++,
+        balance: 0,
+        user: {
+            name,
             cpf,
-            data_nascimento,
-            telefone,
+            birthdate,
+            phonenumber,
             email,
-            senha,
+            password,
         }
     }
 }

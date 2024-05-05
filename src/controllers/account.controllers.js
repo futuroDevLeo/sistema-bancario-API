@@ -1,14 +1,19 @@
-import bancodedados from '../database/db.connection.js';
 import services from "../services/account.services.js";
+import accountRepositories from "../repositories/account.repositories.js";
 
-const listarContas = (req, res) => {
-    return res.status(200).json(services.listAccountsService());
+const listarContas = async (req, res) => {
+    try {
+        const allAccounts = await services.listAccountsService();
+        return res.status(200).json(allAccounts);
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
-const criarConta = (req, res) => {
+const criarConta = async (req, res) => {
     try {
         const novaConta = services.createAccountService(req.body);
-        bancodedados.contas.push(novaConta);
+        await accountRepositories.createAccount(novaConta);
         return res.status(201).send();
     } catch (error) {
         return res.status(500).json(error.message);
