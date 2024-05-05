@@ -1,8 +1,9 @@
 {
-  "name": "desafio-backend-modulo-02-sistema-bancario-b2b-ifood-t07",
-  "version": "1.0.0",
-  "description": "![](https://i.imgur.com/xG74tOh.png)",
+  "name": "sistema-bancario-api",
+  "version": "1.2.0",
+  "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon ./src/index.js"
   },

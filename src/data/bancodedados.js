@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     banco: {
         nome: 'Cubos Bank',
         numero: '123',

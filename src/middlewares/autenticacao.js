@@ -1,4 +1,4 @@
-const bancodedados = require('../data/bancodedados');
+import bancodedados from '../data/bancodedados.js';
 
 const autenticarSenha = (req, res, next) => {
     const senhaBanco = req.query.senha_banco
@@ -40,7 +40,7 @@ const validarConta = (req, res, next) => {
     next()
 }
 
-module.exports = {
+export default {
     autenticarSenha,
     validarCamposBody,
     validarConta

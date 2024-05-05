@@ -1,5 +1,5 @@
-const bancodedados = require('../data/bancodedados');
-const { format } = require('date-fns')
+import bancodedados from '../data/bancodedados.js';
+import { format } from 'date-fns';
 
 function buscarConta(numeroconta) {
     const contaExiste = bancodedados.contas.find(conta => conta.numero === numeroconta)
@@ -246,7 +246,7 @@ const consultarExtrato = (req, res) => {
     return res.status(200).json(extrato);
 }
 
-module.exports = {
+export default {
     listarContas,
     criarConta,
     atualizarUsuario,

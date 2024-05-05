@@ -1,6 +1,6 @@
-const { Router } = require('express');
-const autenticacao = require('./middlewares/autenticacao');
-const controladoresBanco = require('./controllers/banco');
+import { Router } from 'express';
+import autenticacao from './middlewares/autenticacao.js';
+import controladoresBanco from './controllers/banco.js';
 
 const router = Router();
 
@@ -14,4 +14,4 @@ router.post('/transacoes/transferir', controladoresBanco.transferir);
 router.get('/contas/saldo', autenticacao.validarConta, controladoresBanco.consultarSaldo);
 router.get('/contas/extrato', autenticacao.validarConta, controladoresBanco.consultarExtrato);
 
-module.exports = router
+export default router
