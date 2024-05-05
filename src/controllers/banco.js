@@ -1,4 +1,4 @@
-import bancodedados from '../data/bancodedados.js';
+import bancodedados from '../database/bancodedados.js';
 import buscarConta from "../services/utilsBank.js";
 import { format } from 'date-fns';
 
