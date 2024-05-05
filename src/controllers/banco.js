@@ -1,10 +1,6 @@
 import bancodedados from '../data/bancodedados.js';
+import buscarConta from "../services/utilsBank.js";
 import { format } from 'date-fns';
-
-function buscarConta(numeroconta) {
-    const contaExiste = bancodedados.contas.find(conta => conta.numero === numeroconta)
-    return contaExiste
-}
 
 const listarContas = (req, res) => {
     return res.status(200).json(bancodedados.contas)
