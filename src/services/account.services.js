@@ -1,4 +1,4 @@
-import bancodedados from '../database/bancodedados.js';
+import bancodedados from '../database/db.connection.js';
 import findAccount from "../repositories/account.repositories.js";
 import { format } from 'date-fns';
 

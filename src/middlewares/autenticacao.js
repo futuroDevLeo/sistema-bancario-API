@@ -1,4 +1,4 @@
-import bancodedados from '../database/bancodedados.js';
+import bancodedados from '../database/db.connection.js';
 
 const autenticarSenha = (req, res, next) => {
     const senhaBanco = req.query.senha_banco

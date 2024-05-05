@@ -1,4 +1,4 @@
-import bancodedados from '../database/bancodedados.js';
+import bancodedados from '../database/db.connection.js';
 import services from "../services/account.services.js";
 
 const listarContas = (req, res) => {
