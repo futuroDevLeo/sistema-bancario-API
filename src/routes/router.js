@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import autenticacao from '../middlewares/autenticacao.js';
-import controladoresBanco from '../controllers/banco.js';
+import controladoresBanco from '../controllers/account.controllers.js';
 
 const router = Router();
 
