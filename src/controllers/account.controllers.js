@@ -6,47 +6,79 @@ const listarContas = (req, res) => {
 }
 
 const criarConta = (req, res) => {
-    const novaConta = services.createAccountService(req.body);
-    bancodedados.contas.push(novaConta);
-    return res.status(201).send();
+    try {
+        const novaConta = services.createAccountService(req.body);
+        bancodedados.contas.push(novaConta);
+        return res.status(201).send();
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 const excluirConta = (req, res) => {
-    services.deleteAccountService(req.params.numeroConta);
-    return res.status(200).send();
+    try {
+        services.deleteAccountService(req.params.numeroConta);
+        return res.status(200).send();
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 const atualizarUsuario = (req, res) => {
-    const contaAtualizar = services.updateUserService(req.body, req.params.numeroConta);
-    contaAtualizar.usuario = usuarioAtualizado;
-    return res.status(200).send();
+    try {
+        const contaAtualizar = services.updateUserService(req.body, req.params.numeroConta);
+        contaAtualizar.usuario = usuarioAtualizado;
+        return res.status(200).send();
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 const fazerDeposito = (req, res) => {
-    const registroTransacao = services.makeDepositService(req.body);
-    bancodedados.depositos.push(registroTransacao);
-    return res.status(200).send();
+    try {
+        const registroTransacao = services.makeDepositService(req.body);
+        bancodedados.depositos.push(registroTransacao);
+        return res.status(200).send();
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 const fazerSaque = (req, res) => {
-    const registroTransacao = services.makeWithdrawalService(req.body);
-    bancodedados.saques.push(registroTransacao);
-    return res.status(200).send();
+    try {
+        const registroTransacao = services.makeWithdrawalService(req.body);
+        bancodedados.saques.push(registroTransacao);
+        return res.status(200).send();
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 const transferir = (req, res) => {
-    const registroTransacao = services.makeTransferService(req.body);
-    bancodedados.transferencias.push(registroTransacao);
-    return res.status(200).send();
+    try {
+        const registroTransacao = services.makeTransferService(req.body);
+        bancodedados.transferencias.push(registroTransacao);
+        return res.status(200).send();
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 const consultarSaldo = (req, res) => {
-    return res.status(200).json(services.checkBalanceService(req.query))
+    try {
+        return res.status(200).json(services.checkBalanceService(req.query));
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 const consultarExtrato = (req, res) => {
-    const extrato = services.checkExtractService(req.query);
-    return res.status(200).json(extrato);
+    try {
+        const extrato = services.checkExtractService(req.query);
+        return res.status(200).json(extrato);
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
 }
 
 export default {
