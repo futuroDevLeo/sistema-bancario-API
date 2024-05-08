@@ -5,24 +5,27 @@ import { format } from 'date-fns';
 const listAccountsService = async () => {
     const allAccounts = await accountRepositories.findAll();
     if (allAccounts.length == 0) throw new Error('There are no registered accounts.');
-    return allAccounts
+    return allAccounts;
 }
 
-const createAccountService = ({ name, cpf, birthdate, phonenumber, email, password }) => {
-    // const contaExistente = bancodedados.contas.find(conta => {
-    //     return conta.usuario.cpf === cpf || conta.usuario.email === email
-    // });
+const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, password }) => {
+    const emailDatabase = accountRepositories.findByEmail(email);
+    const cpfDatabase = accountRepositories.findByCpf(cpf);
 
-    // if (contaExistente) throw new Error('Já existe uma conta com o cpf ou e-mail informado!');
+    if (emailDatabase.length > 0 || cpfDatabase.length > 0)
+        throw new Error('An account already exists with the CPF or email provided.');
+
+    const allAccounts = await accountRepositories.findAll();
 
     let accountNumber = 1;
 
-    // if (bancodedados.contas.length != 0) {
-    //     numero = String(Number(bancodedados.contas[bancodedados.contas.length - 1].numero) + 1);
-    // }
+    if (allAccounts.length != 0) {
+        const lastAccount = allAccounts[allAccounts.length - 1];
+        accountNumber = Number(lastAccount.accountNumber) + 1;
+    }
 
     return {
-        accountNumber: accountNumber++,
+        accountNumber,
         balance: 0,
         user: {
             name,
@@ -34,6 +37,8 @@ const createAccountService = ({ name, cpf, birthdate, phonenumber, email, passwo
         }
     }
 }
+
+// FALTA ATUALIZAR DAQUI PRA BAIXO
 
 const deleteAccountService = (numeroConta) => {
     const contaDeletar = findAccount(numeroConta);

@@ -1,17 +1,20 @@
 import Account from "../models/Account.js";
 
-import bancodedados from '../database/db.connection.js';
-
 const findAll = () => Account.find();
 
 const createAccount = (accountObject) => Account.create(accountObject);
-// Precisa mudar
-const findAccount = (accontnumber) => {
-    bancodedados.contas.find(conta => conta.usuario.numero === accontnumber);
-}
+
+const findByAccountNumber = (accountnumber) => Account.find(accountnumber);
+
+const findByCpf = (cpf) => Account.find({ "user.cpf": cpf });
+
+const findByEmail = (email) => Account.find({ "user.email": email });
+
 
 export default {
     findAll,
     createAccount,
-    findAccount
+    findByAccountNumber,
+    findByCpf,
+    findByEmail
 };

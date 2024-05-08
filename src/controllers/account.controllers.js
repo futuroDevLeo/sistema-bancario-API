@@ -1,7 +1,7 @@
 import services from "../services/account.services.js";
 import accountRepositories from "../repositories/account.repositories.js";
 
-const listarContas = async (req, res, next) => {
+const allAccountsGet = async (req, res, next) => {
     try {
         const allAccounts = await services.listAccountsService();
         return res.status(200).json(allAccounts);
@@ -10,15 +10,17 @@ const listarContas = async (req, res, next) => {
     }
 }
 
-const criarConta = async (req, res, next) => {
+const accountPost = async (req, res, next) => {
     try {
-        const novaConta = services.createAccountService(req.body);
+        const novaConta = await services.createAccountService(req.body);
         await accountRepositories.createAccount(novaConta);
         return res.status(201).send();
     } catch (e) {
         next(e);
     }
 }
+
+// PRECISA EDITAR DAQUI PRA BAIXO
 
 const excluirConta = (req, res) => {
     try {
@@ -87,8 +89,8 @@ const consultarExtrato = (req, res) => {
 }
 
 export default {
-    listarContas,
-    criarConta,
+    allAccountsGet,
+    accountPost,
     atualizarUsuario,
     excluirConta,
     fazerDeposito,
