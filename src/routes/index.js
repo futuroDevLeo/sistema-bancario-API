@@ -9,11 +9,11 @@ router.get('/contas',
     controladoresBanco.listarContas
 );
 router.post('/contas',
-    // autenticacao.validarCamposBody,
+    autenticacao.validarCamposBody,
     controladoresBanco.criarConta
 );
 router.put('/contas/:numeroConta/usuario',
-    // autenticacao.validarCamposBody,
+    autenticacao.validarCamposBody,
     controladoresBanco.atualizarUsuario
 );
 router.delete('/contas/:numeroConta', controladoresBanco.excluirConta);

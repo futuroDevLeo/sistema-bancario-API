@@ -1,22 +1,22 @@
 import services from "../services/account.services.js";
 import accountRepositories from "../repositories/account.repositories.js";
 
-const listarContas = async (req, res) => {
+const listarContas = async (req, res, next) => {
     try {
         const allAccounts = await services.listAccountsService();
         return res.status(200).json(allAccounts);
-    } catch (error) {
-        return res.status(500).json(error.message);
+    } catch (e) {
+        next(e);
     }
 }
 
-const criarConta = async (req, res) => {
+const criarConta = async (req, res, next) => {
     try {
         const novaConta = services.createAccountService(req.body);
         await accountRepositories.createAccount(novaConta);
         return res.status(201).send();
-    } catch (error) {
-        return res.status(500).json(error.message);
+    } catch (e) {
+        next(e);
     }
 }
 

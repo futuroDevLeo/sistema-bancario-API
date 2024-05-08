@@ -4,14 +4,11 @@ import { format } from 'date-fns';
 
 const listAccountsService = async () => {
     const allAccounts = await accountRepositories.findAll();
-    if (allAccounts.length == 0) throw new Error('there are no registered accounts!');
+    if (allAccounts.length == 0) throw new Error('There are no registered accounts.');
     return allAccounts
 }
 
 const createAccountService = ({ name, cpf, birthdate, phonenumber, email, password }) => {
-    if (!name || !cpf || !birthdate || !phonenumber || !email || !password)
-        throw new Error('All fields are mandatory.');
-
     // const contaExistente = bancodedados.contas.find(conta => {
     //     return conta.usuario.cpf === cpf || conta.usuario.email === email
     // });

@@ -1,21 +1,19 @@
 import bancodedados from '../database/db.connection.js';
 
-const autenticarSenha = (req, res, next) => {
-    const senhaBanco = req.query.senha_banco
+// const autenticarSenha = (req, res, next) => {
+//     const senhaBanco = req.query.senha_banco
 
-    if (!senhaBanco || senhaBanco !== bancodedados.banco.senha) {
-        return res.status(401).json({ mensagem: "A senha do banco informada é inválida!" })
-    }
+//     if (!senhaBanco || senhaBanco !== bancodedados.banco.senha) {
+//         return res.status(401).json({ mensagem: "A senha do banco informada é inválida!" })
+//     }
 
-    next()
-}
+//     next()
+// }
 
 const validarCamposBody = (req, res, next) => {
-    const { nome, cpf, data_nascimento, telefone, email, senha } = req.body
+    const { name, cpf, birthdate, phonenumber, email, password } = req.body
 
-    if (!nome || !cpf || !data_nascimento || !telefone || !email || !senha) {
-        return res.status(400).json({ mensagem: 'Todos os campos são obrigatórios.' })
-    }
+    if (!name || !cpf || !birthdate || !phonenumber || !email || !password) throw new Error('All fields are mandatory.')
 
     next()
 }
@@ -41,7 +39,7 @@ const validarConta = (req, res, next) => {
 }
 
 export default {
-    autenticarSenha,
+    // autenticarSenha,
     validarCamposBody,
     validarConta
 }
