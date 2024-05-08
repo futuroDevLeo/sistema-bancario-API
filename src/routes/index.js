@@ -6,11 +6,11 @@ const router = Router();
 
 router.get('/contas',
     // autenticacao.autenticarSenha,
-    controladoresBanco.listarContas
+    controladoresBanco.allAccountsGet
 );
 router.post('/contas',
     autenticacao.validarCamposBody,
-    controladoresBanco.criarConta
+    controladoresBanco.accountPost
 );
 router.put('/contas/:numeroConta/usuario',
     autenticacao.validarCamposBody,
