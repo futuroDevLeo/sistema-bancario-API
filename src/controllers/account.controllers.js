@@ -10,26 +10,27 @@ const allAccountsGet = async (req, res, next) => {
     }
 }
 
-const accountPost = async (req, res, next) => {
+const postAccount = async (req, res, next) => {
     try {
-        const novaConta = await services.createAccountService(req.body);
-        await accountRepositories.createAccount(novaConta);
+        const newAccount = await services.createAccountService(req.body);
+        await accountRepositories.createAccount(newAccount);
         return res.status(201).send();
     } catch (e) {
         next(e);
     }
 }
 
-// PRECISA EDITAR DAQUI PRA BAIXO
-
-const excluirConta = (req, res) => {
+const deleteAccount = async (req, res, next) => {
     try {
-        services.deleteAccountService(req.params.numeroConta);
+        const accountToDelete = await services.deleteAccountService(req.params.numeroConta);
+        await accountRepositories.deleteAccount(accountToDelete);
         return res.status(200).send();
-    } catch (error) {
-        return res.status(500).json(error.message);
+    } catch (e) {
+        next(e);
     }
 }
+
+// PRECISA EDITAR DAQUI PRA BAIXO
 
 const atualizarUsuario = (req, res) => {
     try {
@@ -90,9 +91,9 @@ const consultarExtrato = (req, res) => {
 
 export default {
     allAccountsGet,
-    accountPost,
+    postAccount,
     atualizarUsuario,
-    excluirConta,
+    deleteAccount,
     fazerDeposito,
     fazerSaque,
     transferir,

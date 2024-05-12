@@ -10,13 +10,15 @@ router.get('/contas',
 );
 router.post('/contas',
     autenticacao.validarCamposBody,
-    controladoresBanco.accountPost
+    controladoresBanco.postAccount
 );
 router.put('/contas/:numeroConta/usuario',
     autenticacao.validarCamposBody,
     controladoresBanco.atualizarUsuario
 );
-router.delete('/contas/:numeroConta', controladoresBanco.excluirConta);
+router.delete('/contas/:numeroConta',
+    controladoresBanco.deleteAccount
+);
 router.post('/transacoes/depositar', controladoresBanco.fazerDeposito);
 router.post('/transacoes/sacar', controladoresBanco.fazerSaque);
 router.post('/transacoes/transferir', controladoresBanco.transferir);

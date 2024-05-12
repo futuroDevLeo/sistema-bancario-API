@@ -38,18 +38,17 @@ const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, 
     }
 }
 
-// FALTA ATUALIZAR DAQUI PRA BAIXO
+const deleteAccountService = async (numeroConta) => {
+    const accountExists = await accountRepositories.findByAccountNumber(numeroConta);
 
-const deleteAccountService = (numeroConta) => {
-    const contaDeletar = findAccount(numeroConta);
+    if (!accountExists[0]) throw new Error('Bank Account not found.');
 
-    if (!contaDeletar) throw new Error('Conta não encontrada.');
+    if (accountExists[0].balance !== 0) throw new Error('Balance greater than zero.');
 
-    if (contaDeletar.saldo !== 0) throw new Error('Por favor, retire o dinhero da conta antes de deleta-la!');
-
-    const indiceConta = bancodedados.contas.indexOf(contaDeletar);
-    return bancodedados.contas.splice(indiceConta, 1);
+    return accountExists[0];
 }
+
+// FALTA ATUALIZAR DAQUI PRA BAIXO
 
 const updateUserService = ({ nome, cpf, data_nascimento, telefone, email, senha }, numeroConta) => {
     const contaAtualizar = findAccount(numeroConta)
