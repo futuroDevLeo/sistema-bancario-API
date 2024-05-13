@@ -9,8 +9,8 @@ const listAccountsService = async () => {
 }
 
 const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, password }) => {
-    const emailDatabase = accountRepositories.findByEmail(email);
-    const cpfDatabase = accountRepositories.findByCpf(cpf);
+    const emailDatabase = await accountRepositories.findByEmail(email);
+    const cpfDatabase = await accountRepositories.findByCpf(cpf);
 
     if (emailDatabase.length > 0 || cpfDatabase.length > 0)
         throw new Error('An account already exists with the CPF or email provided.');
