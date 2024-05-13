@@ -38,8 +38,8 @@ const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, 
     }
 }
 
-const deleteAccountService = async (numeroConta) => {
-    const accountExists = await accountRepositories.findByAccountNumber(numeroConta);
+const deleteAccountService = async (accountNumber) => {
+    const accountExists = await accountRepositories.findByAccountNumber(accountNumber);
 
     if (!accountExists[0]) throw new Error('Bank Account not found.');
 
@@ -48,28 +48,38 @@ const deleteAccountService = async (numeroConta) => {
     return accountExists[0];
 }
 
-// FALTA ATUALIZAR DAQUI PRA BAIXO
+const updateUserService = async ({ name, cpf, birthdate, phonenumber, email, password }, accountNumber) => {
+    const accountExists = await accountRepositories.findByAccountNumber(accountNumber);
 
-const updateUserService = ({ nome, cpf, data_nascimento, telefone, email, senha }, numeroConta) => {
-    const contaAtualizar = findAccount(numeroConta)
+    if (!accountExists[0]) throw new Error('Bank Account not found.');
 
-    if (!contaAtualizar) throw new Error('Conta não encontrada.');
+    const emailDatabase = await accountRepositories.findByEmail(email);
+    const cpfDatabase = await accountRepositories.findByCpf(cpf);
 
-    const contaExistente = bancodedados.contas.find(conta => {
-        return (conta.usuario.cpf === cpf || conta.usuario.email === email) && conta.numero !== numeroConta
-    })
+    if (emailDatabase[0]) {
+        if (emailDatabase[0].user.email !== accountExists[0].user.email)
+            throw new Error('An account already exists with the CPF or email provided.');
+    }
 
-    if (contaExistente) throw new Error('Já existe cadastrado para o CPF ou o Email informado!');
+    if (cpfDatabase[0]) {
+        if (cpfDatabase[0].user.cpf !== accountExists[0].user.cpf)
+            throw new Error('An account already exists with the CPF or email provided.');
+    }
 
     return {
-        nome,
-        cpf,
-        data_nascimento,
-        telefone,
-        email,
-        senha
+        accountNumber: accountExists[0].accountNumber,
+        user: {
+            name,
+            cpf,
+            birthdate,
+            phonenumber,
+            email,
+            password
+        }
     }
 }
+
+// FALTA ATUALIZAR DAQUI PRA BAIXO
 
 const makeDepositService = ({ numero_conta, valor }) => {
     if (!numero_conta || !valor) throw new Error('O número da conta e o valor são obrigatórios!');

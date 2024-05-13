@@ -1,7 +1,7 @@
 import services from "../services/account.services.js";
 import accountRepositories from "../repositories/account.repositories.js";
 
-const allAccountsGet = async (req, res, next) => {
+const getAllAccounts = async (req, res, next) => {
     try {
         const allAccounts = await services.listAccountsService();
         return res.status(200).json(allAccounts);
@@ -30,17 +30,17 @@ const deleteAccount = async (req, res, next) => {
     }
 }
 
-// PRECISA EDITAR DAQUI PRA BAIXO
-
-const atualizarUsuario = (req, res) => {
+const putUser = async (req, res, next) => {
     try {
-        const contaAtualizar = services.updateUserService(req.body, req.params.numeroConta);
-        contaAtualizar.usuario = usuarioAtualizado;
+        const userToUpdate = await services.updateUserService(req.body, req.params.numeroConta);
+        await accountRepositories.updateUser(userToUpdate);
         return res.status(200).send();
-    } catch (error) {
-        return res.status(500).json(error.message);
+    } catch (e) {
+        next(e);
     }
 }
+
+// PRECISA EDITAR DAQUI PRA BAIXO
 
 const fazerDeposito = (req, res) => {
     try {
@@ -90,9 +90,9 @@ const consultarExtrato = (req, res) => {
 }
 
 export default {
-    allAccountsGet,
+    getAllAccounts,
     postAccount,
-    atualizarUsuario,
+    putUser,
     deleteAccount,
     fazerDeposito,
     fazerSaque,

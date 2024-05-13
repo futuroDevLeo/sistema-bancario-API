@@ -12,6 +12,15 @@ const findByEmail = (email) => Account.find({ "user.email": email });
 
 const deleteAccount = (accountObject) => Account.deleteOne(accountObject);
 
+const updateUser = (userObject) => {
+    const { accountNumber, user } = userObject;
+
+    return Account.updateOne(
+        { "accountNumber": accountNumber },
+        { $set: { "user": user } }
+    );
+}
+
 
 export default {
     findAll,
@@ -19,5 +28,6 @@ export default {
     findByAccountNumber,
     findByCpf,
     findByEmail,
-    deleteAccount
+    deleteAccount,
+    updateUser
 };

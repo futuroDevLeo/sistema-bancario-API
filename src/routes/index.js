@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/contas',
     // autenticacao.autenticarSenha,
-    controladoresBanco.allAccountsGet
+    controladoresBanco.getAllAccounts
 );
 router.post('/contas',
     autenticacao.validarCamposBody,
@@ -14,7 +14,7 @@ router.post('/contas',
 );
 router.put('/contas/:numeroConta/usuario',
     autenticacao.validarCamposBody,
-    controladoresBanco.atualizarUsuario
+    controladoresBanco.putUser
 );
 router.delete('/contas/:numeroConta',
     controladoresBanco.deleteAccount
