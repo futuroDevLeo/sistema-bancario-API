@@ -9,8 +9,10 @@ const listAccountsService = async () => {
 }
 
 const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, password }) => {
-    const emailDatabase = await accountRepositories.findByEmail(email);
-    const cpfDatabase = await accountRepositories.findByCpf(cpf);
+    const [emailDatabase, cpfDatabase] = await Promise.all([
+        accountRepositories.findByEmail(email),
+        accountRepositories.findByCpf(cpf),
+    ]);
 
     if (emailDatabase.length > 0 || cpfDatabase.length > 0)
         throw new Error('An account already exists with the CPF or email provided.');
@@ -56,8 +58,10 @@ const updateUserService = async ({ name, cpf, birthdate, phonenumber, email, pas
 
     if (!accountExists[0]) throw new Error('Bank Account not found.');
 
-    const emailDatabase = await accountRepositories.findByEmail(email);
-    const cpfDatabase = await accountRepositories.findByCpf(cpf);
+    const [emailDatabase, cpfDatabase] = await Promise.all([
+        accountRepositories.findByEmail(email),
+        accountRepositories.findByCpf(cpf),
+    ]);
 
     if (emailDatabase[0]) {
         if (emailDatabase[0].user.email !== accountExists[0].user.email)
