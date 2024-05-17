@@ -9,6 +9,10 @@ const AccountSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    createdAt: {
+        type: Date,
+        required: true
+    },
     user: {
         name: {
             type: String,

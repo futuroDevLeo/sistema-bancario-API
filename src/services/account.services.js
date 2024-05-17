@@ -24,9 +24,12 @@ const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, 
         accountNumber = Number(lastAccount.accountNumber) + 1;
     }
 
+    const createdAt = new Date();
+
     return {
         accountNumber,
         balance: 0,
+        createdAt,
         user: {
             name,
             cpf,

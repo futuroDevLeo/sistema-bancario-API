@@ -1,28 +1,40 @@
 import { Router } from 'express';
 import autenticacao from '../middlewares/autenticacao.js';
-import controladoresBanco from '../controllers/account.controllers.js';
+import bankcontrollers from '../controllers/account.controllers.js';
 
 const router = Router();
 
 router.get('/contas',
     // autenticacao.autenticarSenha,
-    controladoresBanco.getAllAccounts
+    bankcontrollers.getAllAccounts
 );
 router.post('/contas',
     autenticacao.validarCamposBody,
-    controladoresBanco.postAccount
+    bankcontrollers.postAccount
 );
 router.put('/contas/:numeroConta/usuario',
     autenticacao.validarCamposBody,
-    controladoresBanco.putUser
+    bankcontrollers.putUser
 );
 router.delete('/contas/:numeroConta',
-    controladoresBanco.deleteAccount
+    bankcontrollers.deleteAccount
 );
-router.post('/transacoes/depositar', controladoresBanco.fazerDeposito);
-router.post('/transacoes/sacar', controladoresBanco.fazerSaque);
-router.post('/transacoes/transferir', controladoresBanco.transferir);
-router.get('/contas/saldo', autenticacao.validarConta, controladoresBanco.consultarSaldo);
-router.get('/contas/extrato', autenticacao.validarConta, controladoresBanco.consultarExtrato);
+router.post('/transacoes/depositar',
+    // controladoresBanco.fazerDeposito
+);
+router.post('/transacoes/sacar',
+    // controladoresBanco.fazerSaque
+);
+router.post('/transacoes/transferir',
+    // controladoresBanco.transferir
+);
+router.get('/contas/saldo',
+    autenticacao.validarConta,
+    // controladoresBanco.consultarSaldo
+);
+router.get('/contas/extrato',
+    autenticacao.validarConta,
+    // controladoresBanco.consultarExtrato
+);
 
 export default router
