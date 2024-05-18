@@ -1,21 +1,19 @@
-import accountRepositories from "../repositories/account.repositories.js";
-
-const listAccountsService = async () => {
-    const allAccounts = await accountRepositories.findAll();
+const listAccountsService = async (repositories) => {
+    const allAccounts = await repositories.findAll();
     if (allAccounts.length == 0) throw new Error('There are no registered accounts.');
     return allAccounts;
 }
 
-const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, password }) => {
+const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, password }, repositories) => {
     const [emailDatabase, cpfDatabase] = await Promise.all([
-        accountRepositories.findByEmail(email),
-        accountRepositories.findByCpf(cpf),
+        repositories.findByEmail(email),
+        repositories.findByCpf(cpf),
     ]);
 
     if (emailDatabase.length > 0 || cpfDatabase.length > 0)
         throw new Error('An account already exists with the CPF or email provided.');
 
-    const allAccounts = await accountRepositories.findAll();
+    const allAccounts = await repositories.findAll();
 
     let accountNumber = 1;
 
@@ -40,31 +38,17 @@ const createAccountService = async ({ name, cpf, birthdate, phonenumber, email, 
         }
     }
 
-    await accountRepositories.createAccount(newAccount);
-
-    return;
+    await repositories.createAccount(newAccount);
 }
 
-const deleteAccountService = async (accountNumber) => {
-    const [accountToDelete, ..._] = await accountRepositories.findByAccountNumber(accountNumber);
-
-    if (!accountToDelete) throw new Error('Bank Account not found.');
-
-    if (accountToDelete.balance !== 0) throw new Error('Balance greater than zero.');
-
-    await accountRepositories.deleteAccount(accountToDelete);
-
-    return;
-}
-
-const updateUserService = async ({ name, cpf, birthdate, phonenumber, email, password }, accountNumber) => {
-    const [accountExists, ..._] = await accountRepositories.findByAccountNumber(accountNumber);
+const updateUserService = async ({ name, cpf, birthdate, phonenumber, email, password }, accountNumber, repositories) => {
+    const [accountExists] = await repositories.findByAccountNumber(accountNumber);
 
     if (!accountExists) throw new Error('Bank Account not found.');
 
     const [emailDatabase, cpfDatabase] = await Promise.all([
-        accountRepositories.findByEmail(email),
-        accountRepositories.findByCpf(cpf),
+        repositories.findByEmail(email),
+        repositories.findByCpf(cpf),
     ]);
 
     if (emailDatabase[0]) {
@@ -89,14 +73,19 @@ const updateUserService = async ({ name, cpf, birthdate, phonenumber, email, pas
         }
     }
 
-    await accountRepositories.updateUser(userToUpdate);
+    await repositories.updateUser(userToUpdate);
+}
 
-    return;
+const deleteAccountService = async (accountNumber, repositories) => {
+    const [accountToDelete] = await repositories.findByAccountNumber(accountNumber);
+    if (!accountToDelete) throw new Error('Bank Account not found.');
+    if (accountToDelete.balance !== 0) throw new Error('Balance greater than zero.');
+    await repositories.deleteAccount(accountToDelete);
 }
 
 export default {
     listAccountsService,
     createAccountService,
-    deleteAccountService,
-    updateUserService
+    updateUserService,
+    deleteAccountService
 }
