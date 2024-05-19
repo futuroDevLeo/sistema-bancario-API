@@ -9,7 +9,8 @@
     "url": "git+https://github.com/futuroDevLeo/sistema-bancario-API.git"
   },
   "scripts": {
-    "dev": "nodemon --env-file .env ./src/server.js"
+    "dev": "nodemon --env-file .env ./src/server.js",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "leonunes07@outlook.com",
@@ -21,6 +22,7 @@
     "mongoose": "^8.3.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "vitest": "^1.6.0"
   }
 }
