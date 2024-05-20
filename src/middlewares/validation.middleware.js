@@ -8,13 +8,15 @@
 //     next()
 // }
 
-const validarCamposBody = (req, res, next) => {
-    const { name, cpf, birthdate, phonenumber, email, password } = req.body
+const validateBodyFields = (req, res, next) => {
+    const { name, cpf, birthdate, phonenumber, email, password } = req.body;
 
-    if (!name || !cpf || !birthdate || !phonenumber || !email || !password) throw new Error('All fields are mandatory.')
+    if (!name || !cpf || !birthdate || !phonenumber || !email || !password) throw new Error('All fields are mandatory.');
 
-    next()
+    next();
 }
+
+// PRECISA ATUALIZAR
 
 const validarConta = (req, res, next) => {
     const { numero_conta, senha } = req.query;
@@ -34,6 +36,6 @@ const validarConta = (req, res, next) => {
 
 export default {
     // autenticarSenha,
-    validarCamposBody,
+    validateBodyFields,
     validarConta
 }

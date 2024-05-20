@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import autenticacao from '../middlewares/autenticacao.js';
+import validationMiddleware from '../middlewares/validation.middleware.js';
 import accountControllers from '../controllers/account.controllers.js';
 
 const router = Router();
@@ -9,11 +9,11 @@ router.get('/contas',
     accountControllers.getAllAccounts
 );
 router.post('/contas',
-    autenticacao.validarCamposBody,
+    validationMiddleware.validateBodyFields,
     accountControllers.postAccount
 );
 router.put('/contas/:numeroConta/usuario',
-    autenticacao.validarCamposBody,
+    validationMiddleware.validateBodyFields,
     accountControllers.putUser
 );
 router.delete('/contas/:numeroConta',
