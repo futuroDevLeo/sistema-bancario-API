@@ -26,7 +26,6 @@ describe('Account Services', () => {
                     password: "teste_senha"
                 }
             })
-
             onTestFinished(() => inMemoryRepository.db.pop());
             const allAccounts = await accountServices.listAccountsService(inMemoryRepository);
             expect(allAccounts.length).toBeGreaterThan(0);
@@ -49,16 +48,14 @@ describe('Account Services', () => {
                     password: "teste_senha"
                 }
             });
-
             const newAccount = {
                 name: "Jane Doe",
                 cpf: "55443322110",
                 birthdate: "1990-01-01",
                 phonenumber: "999888-7777",
-                email: "test@example.com", // Email duplicado
+                email: "test@example.com", // Duplicate email
                 password: "teste_senha2"
             };
-
             onTestFinished(() => inMemoryRepository.db.pop());
             try {
                 await accountServices.createAccountService(newAccount, inMemoryRepository);
@@ -81,16 +78,14 @@ describe('Account Services', () => {
                     password: "teste_senha"
                 }
             });
-
             const newAccount = {
                 name: "Jane Doe",
-                cpf: "00112233445", // CPF duplicado
+                cpf: "00112233445", // Duplicate CPF
                 birthdate: "1990-01-01",
                 phonenumber: "999888-7777",
                 email: "jane@example.com",
                 password: "teste_senha2"
             };
-
             onTestFinished(() => inMemoryRepository.db.pop());
             try {
                 await accountServices.createAccountService(newAccount, inMemoryRepository);
@@ -108,7 +103,6 @@ describe('Account Services', () => {
                 email: "jane@example.com",
                 password: "teste_senha2"
             };
-
             onTestFinished(() => inMemoryRepository.db.pop());
             await accountServices.createAccountService(newAccount, inMemoryRepository);
             const allAccounts = inMemoryRepository.db;
