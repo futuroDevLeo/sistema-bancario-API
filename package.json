@@ -1,8 +1,8 @@
 {
   "name": "sistema-bancario-api",
-  "version": "1.2.0",
-  "description": "",
-  "main": "server.js",
+  "version": "1.3.0",
+  "description": "An API for a banking system that allows performing operations with bank accounts.",
+  "main": "server.ts",
   "type": "module",
   "repository": {
     "type": "git",
@@ -12,12 +12,18 @@
     "dev": "tsx watch --env-file .env ./src/server.ts",
     "test": "vitest"
   },
-  "keywords": [],
+  "keywords": [
+    "banking system",
+    "financial services API",
+    "RESTful API",
+    "MongoDB",
+    "Node.js",
+    "Express"
+  ],
   "author": "leonunes07@outlook.com",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "date-fns": "^2.30.0",
     "express": "^4.18.2",
     "mongoose": "^8.3.3"
   },
@@ -25,7 +31,6 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.12",
-    "nodemon": "^3.0.1",
     "tsx": "^4.10.5",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0"
