@@ -1,5 +1,6 @@
 import { it, expect, describe, vi } from 'vitest';
-import validationMiddleware from './validation.middleware.js';
+import validationMiddleware from './validation.middleware.ts';
+import { Request, Response, NextFunction } from 'express';
 // import inMemoryRepository from '../repositories/in-memory/in-memory-account-repositories.js';
 
 describe('Validation Middleware', () => {
@@ -14,12 +15,12 @@ describe('Validation Middleware', () => {
                     password: 'password123'
                     // phoneNumber is missing
                 }
-            }
-            const res = {};
+            } as Request;
+            const res = {} as Response;
             const next = vi.fn();
             try {
                 validationMiddleware.validateBodyFields(req, res, next);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('All fields are mandatory.');
             }
         });
@@ -34,8 +35,8 @@ describe('Validation Middleware', () => {
                     email: 'john@example.com',
                     password: 'password123'
                 }
-            }
-            const res = {};
+            } as Request;
+            const res = {} as Response;
             const next = vi.fn();
             validationMiddleware.validateBodyFields(req, res, next);
             expect(next).toHaveBeenCalled();
@@ -53,8 +54,8 @@ describe('Validation Middleware', () => {
                     password: 'password123',
                     extraField: 'extraValue' // extra field
                 }
-            };
-            const res = {};
+            } as Request;
+            const res = {} as Response;
             const next = vi.fn();
             validationMiddleware.validateBodyFields(req, res, next);
             expect(next).toHaveBeenCalled();

@@ -1,7 +1,8 @@
-import accountServices from "../services/account.services.js";
-import accountRepositories from "../repositories/account.repositories.js";
+import { Request, Response, NextFunction } from 'express';
+import accountServices from "../services/account.services.ts";
+import accountRepositories from "../repositories/account.repositories.ts";
 
-const getAllAccounts = async (req, res, next) => {
+const getAllAccounts = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const allAccounts = await accountServices.listAccountsService(accountRepositories);
         return res.status(200).json(allAccounts);
@@ -10,7 +11,7 @@ const getAllAccounts = async (req, res, next) => {
     }
 }
 
-const postAccount = async (req, res, next) => {
+const postAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
         await accountServices.createAccountService(req.body, accountRepositories);
         return res.status(201).send();
@@ -19,7 +20,7 @@ const postAccount = async (req, res, next) => {
     }
 }
 
-const putUser = async (req, res, next) => {
+const putUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         await accountServices.updateUserService(req.body, req.params.numeroConta, accountRepositories);
         return res.status(200).send();
@@ -28,7 +29,7 @@ const putUser = async (req, res, next) => {
     }
 }
 
-const deleteAccount = async (req, res, next) => {
+const deleteAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
         await accountServices.deleteAccountService(req.params.numeroConta, accountRepositories);
         return res.status(200).send();

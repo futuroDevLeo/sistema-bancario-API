@@ -1,4 +1,4 @@
-import consultServices from "../services/consult.services.js";
+import consultServices from "../services/consult.services.ts";
 
 // PRECISA EDITAR DAQUI PRA BAIXO
 

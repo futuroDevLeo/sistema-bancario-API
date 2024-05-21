@@ -1,13 +1,13 @@
 import { it, expect, describe, onTestFinished } from 'vitest';
-import accountServices from './account.services.js';
-import inMemoryRepository from '../repositories/in-memory/in-memory-account-repositories.js';
+import accountServices from './account.services.ts';
+import inMemoryRepository from '../repositories/in-memory/in-memory-account-repositories.ts';
 
 describe('Account Services', () => {
     describe('listAccountsService', () => {
         it('should return the message "There are no registered accounts."', async () => {
             try {
                 await accountServices.listAccountsService(inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('There are no registered accounts.');
             }
         });
@@ -26,7 +26,11 @@ describe('Account Services', () => {
                     password: "test_password"
                 }
             })
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             const allAccounts = await accountServices.listAccountsService(inMemoryRepository);
             expect(allAccounts.length).toBeGreaterThan(0);
             expect(allAccounts[0].user.name).toBe("John Doe");
@@ -56,10 +60,14 @@ describe('Account Services', () => {
                 email: "test@example.com", // Duplicate email
                 password: "test_password2"
             };
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             try {
                 await accountServices.createAccountService(newAccount, inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('An account already exists with the CPF or email provided.');
             }
         });
@@ -86,10 +94,14 @@ describe('Account Services', () => {
                 email: "jane@example.com",
                 password: "test_password2"
             };
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             try {
                 await accountServices.createAccountService(newAccount, inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('An account already exists with the CPF or email provided.');
             }
         });
@@ -103,7 +115,11 @@ describe('Account Services', () => {
                 email: "jane@example.com",
                 password: "test_password2"
             };
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             await accountServices.createAccountService(newAccount, inMemoryRepository);
             const allAccounts = inMemoryRepository.db;
             expect(allAccounts.length).toBe(1);
@@ -135,10 +151,14 @@ describe('Account Services', () => {
                 password: "test_password"
             };
             const accountNumber = '2';
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             try {
                 await accountServices.updateUserService(updateAccount, accountNumber, inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('Bank Account not found.');
             }
             const allAccounts = inMemoryRepository.db;
@@ -181,11 +201,14 @@ describe('Account Services', () => {
                 password: "test_password2"
             };
             const accountNumber = '2';
-            onTestFinished(() => inMemoryRepository.db.pop());
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             try {
                 await accountServices.updateUserService(updateAccount, accountNumber, inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('An account already exists with the CPF or email provided.');
             }
             const allAccounts = inMemoryRepository.db;
@@ -229,11 +252,14 @@ describe('Account Services', () => {
                 password: "test_password2"
             };
             const accountNumber = '2';
-            onTestFinished(() => inMemoryRepository.db.pop());
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             try {
                 await accountServices.updateUserService(updateAccount, accountNumber, inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('An account already exists with the CPF or email provided.');
             }
             const allAccounts = inMemoryRepository.db;
@@ -277,8 +303,11 @@ describe('Account Services', () => {
                 password: "test_password2"
             };
             const accountNumber = '2';
-            onTestFinished(() => inMemoryRepository.db.pop());
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             await accountServices.updateUserService(updateAccount, accountNumber, inMemoryRepository);
             const allAccounts = inMemoryRepository.db;
             expect(allAccounts.length).toBe(2);
@@ -292,7 +321,7 @@ describe('Account Services', () => {
             const accountNumber = '1';
             try {
                 await accountServices.deleteAccountService(accountNumber, inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('Bank Account not found.');
             }
         });
@@ -311,10 +340,14 @@ describe('Account Services', () => {
                 }
             });
             const accountNumber = '1';
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             try {
                 await accountServices.deleteAccountService(accountNumber, inMemoryRepository);
-            } catch (e) {
+            } catch (e: any) {
                 expect(e.message).toBe('Balance greater than zero.');
             }
         });
@@ -333,7 +366,11 @@ describe('Account Services', () => {
                 }
             });
             const accountNumber = '1';
-            onTestFinished(() => inMemoryRepository.db.pop());
+            onTestFinished(() => {
+                while (inMemoryRepository.db.length > 0) {
+                    inMemoryRepository.db.pop();
+                }
+            });
             await accountServices.deleteAccountService(accountNumber, inMemoryRepository);
             const allAccounts = inMemoryRepository.db;
             expect(allAccounts.length).toBe(0);
