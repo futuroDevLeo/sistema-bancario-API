@@ -1,7 +1,7 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from "cors";
-import router from './routes/index.js'
-import connectDatabase from './config/db.connection.js';
+import router from './routes/index.ts'
+import connectDatabase from './config/db.connection.ts';
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 app.use(router);
 
-app.use(function (error, req, res, next) {
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     if (error.message === "All fields are mandatory."
         || error.message === 'An account already exists with the CPF or email provided.'
         || error.message === 'Balance greater than zero.') {
