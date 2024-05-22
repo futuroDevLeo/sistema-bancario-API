@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import validationMiddleware from '../middlewares/validation.middleware.ts';
 import accountControllers from '../controllers/account.controllers.ts';
+import consultControllers from "../controllers/consult.controllers.ts";
 
 const router = Router();
 
@@ -28,10 +29,10 @@ router.delete('/contas/:numeroConta',
 // router.post('/transacoes/transferir',
 //     // controladoresBanco.transferir
 // );
-// router.get('/contas/saldo',
-//     autenticacao.validarConta,
-//     // controladoresBanco.consultarSaldo
-// );
+router.get('/contas/saldo',
+    // autenticacao.validarConta,
+    consultControllers.getBalance
+);
 // router.get('/contas/extrato',
 //     autenticacao.validarConta,
 //     // controladoresBanco.consultarExtrato
