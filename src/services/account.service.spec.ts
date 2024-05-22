@@ -25,7 +25,7 @@ describe('Account Services', () => {
                     email: "test@example.com",
                     password: "test_password"
                 }
-            })
+            });
             onTestFinished(() => {
                 while (inMemoryRepository.db.length > 0) {
                     inMemoryRepository.db.pop();
